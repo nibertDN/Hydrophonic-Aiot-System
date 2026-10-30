@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Smart AI Irrigation – Field Monitor
 
 A lightweight soil-moisture and water-level **monitoring** system:
