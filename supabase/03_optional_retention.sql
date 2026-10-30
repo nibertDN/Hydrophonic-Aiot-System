@@ -1,0 +1,4 @@
+-- OPTIONAL: keep the free tier small by deleting readings older than 90 days (needs pg_cron extension).
+-- Enable it in Supabase -> Database -> Extensions -> pg_cron, then run:
+-- select cron.schedule('prune-sensor-readings', '15 3 * * *',
+--   $$ delete from public.sensor_readings where created_at < now() - interval '90 days' $$);

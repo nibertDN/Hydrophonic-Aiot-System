@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+firmware/**/secrets.h
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.log
+mosquitto/passwd
+*.pem
+*.key
+.DS_Store

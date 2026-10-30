@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart AI Irrigation – Field Monitor</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true"><path d="M16 29V15M16 15C16 8 11 4 4 4c0 7 4 11 12 11zM16 19c0-5 4-8 11-8 0 6-3 9-11 9z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div><h1>Smart AI Irrigation</h1><p>Field monitor · ESP32 + MQTT</p></div>
+  </div>
+  <div class="top-right">
+    <label class="sel">Device
+      <select id="deviceSelect" aria-label="Device"></select>
+    </label>
+    <span class="pill" id="pillDevice"><i></i><b>Device</b> <span id="pillDeviceText">…</span></span>
+    <span class="pill" id="pillBackend"><i></i><b>Backend</b> <span id="pillBackendText">…</span></span>
+  </div>
+</header>
+
+<main>
+  <div class="banner info" id="bannerPump" role="note">
+    <strong>Monitoring only.</strong> The pump and relay are not installed, so no irrigation is performed or automated. This dashboard only reports sensor readings.
+  </div>
+  <div class="banner sim hidden" id="bannerSim" role="alert">
+    <strong>SIMULATED DATA.</strong> The values shown come from the test simulator, not from real sensors.
+  </div>
+  <div class="banner warn hidden" id="bannerStale" role="status"></div>
+
+  <section class="cards" id="liveCards">
+    <article class="card soil" id="cardSoil">
+      <header><h2>Soil sensor</h2><span class="badge" id="soilBadge">–</span></header>
+      <div class="big"><span id="soilValue">–</span><small>raw ADC (0–4095)</small></div>
+      <div class="profile" aria-hidden="true">
+        <div class="profile-fill" id="soilFill"></div>
+        <div class="profile-mark" id="soilMark"><span id="soilMarkLabel">dry ≥ 3300</span></div>
+      </div>
+      <p class="hint">Higher number = drier soil. Values are uncalibrated sensor units.</p>
+    </article>
+
+    <article class="card water" id="cardWater">
+      <header><h2>Water level</h2><span class="badge" id="waterBadge">–</span></header>
+      <div class="tank" aria-hidden="true"><div class="tank-fill" id="tankFill"></div></div>
+      <p class="tank-text" id="waterText">No data yet</p>
+      <p class="hint">Float switch: LOW signal = enough water, HIGH signal = low water.</p>
+    </article>
+
+    <article class="card leds">
+      <header><h2>Indicators</h2><span class="badge neutral">from device</span></header>
+      <ul class="led-list">
+        <li><span class="led red" id="ledWaterRed"></span><span class="led green" id="ledWaterGreen"></span>Water LEDs</li>
+        <li><span class="led red" id="ledSoilRed"></span><span class="led green" id="ledSoilGreen"></span>Soil LEDs</li>
+        <li><span class="buzz" id="buzzer"></span><span id="buzzerText">Buzzer off</span></li>
+      </ul>
+      <p class="hint" id="ledHint">Reflects the state reported by the ESP32.</p>
+    </article>
+
+    <article class="card device">
+      <header><h2>Device</h2><span class="badge" id="devBadge">–</span></header>
+      <dl>
+        <dt>Last data</dt><dd id="lastSeen">–</dd>
+        <dt>Wi-Fi signal</dt><dd id="rssi">–</dd>
+        <dt>Uptime</dt><dd id="uptime">–</dd>
+        <dt>Message broker</dt><dd id="mqttState">–</dd>
+        <dt>Database</dt><dd id="dbState">–</dd>
+      </dl>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>History and analytics</h2>
+      <div class="range" role="group" aria-label="Time range">
+        <button data-range="1h">1 h</button><button data-range="6h">6 h</button>
+        <button data-range="24h" class="on">24 h</button><button data-range="7d">7 days</button>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="charts">
+      <figure><figcaption>Soil sensor reading (average per interval)</figcaption><div class="chart-box"><canvas id="chartSoil"></canvas></div></figure>
+      <figure><figcaption>Time in alert state (% of readings)</figcaption><div class="chart-box"><canvas id="chartAlerts"></canvas></div></figure>
+    </div>
+    <p class="hint" id="trendText"></p>
+  </section>
+
+  <section class="two">
+    <div class="panel">
+      <h2>Alerts</h2>
+      <p class="hint" id="activeAlerts">No data yet</p>
+      <ol class="alerts" id="alertList"><li class="empty">No alerts recorded yet.</li></ol>
+    </div>
+    <div class="panel">
+      <h2>Sensor log</h2>
+      <div class="table-wrap">
+        <table><thead><tr><th>Time</th><th>Soil</th><th>Soil state</th><th>Water</th><th>Buzzer</th></tr></thead>
+        <tbody id="logBody"><tr><td colspan="5" class="empty">No readings yet.</td></tr></tbody></table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>Readings arrive automatically from the ESP32 – nothing is entered by hand.</span>
+  <a href="admin.html">Administrator</a>
+</footer>
+
+<script src="config.js"></script>
+<script src="vendor/chart.umd.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

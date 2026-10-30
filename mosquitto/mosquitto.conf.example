@@ -1,0 +1,10 @@
+# LOCAL development broker only. Keep it on your LAN - do NOT port-forward 1883 to the internet.
+# Windows: copy to C:\Program Files\mosquitto\mosquitto.conf (or run: mosquitto -c this-file -v)
+listener 1883
+allow_anonymous false
+password_file C:\mosquitto\passwd
+# Create users (run in the Mosquitto folder):
+#   mosquitto_passwd -c C:\mosquitto\passwd irrigation_device
+#   mosquitto_passwd    C:\mosquitto\passwd irrigation_backend
+# Optional ACL so the device can only write its own topics:
+# acl_file C:\mosquitto\acl

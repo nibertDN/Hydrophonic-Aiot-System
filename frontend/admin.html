@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Administrator – Smart AI Irrigation</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div><h1>Administrator</h1><p>Smart AI Irrigation</p></div></div>
+  <div class="top-right"><a class="pill" href="index.html"><b>Back to dashboard</b></a></div>
+</header>
+<main class="narrow">
+  <section class="panel">
+    <h2>Sign in</h2>
+    <form class="admin" id="loginForm">
+      <label class="f">Administrator token
+        <input type="password" id="token" autocomplete="off" required minlength="16">
+      </label>
+      <button class="btn" type="submit">Sign in</button>
+      <p class="msg" id="loginMsg" role="status"></p>
+    </form>
+    <p class="hint">The token is set as <code>ADMIN_TOKEN</code> on the server. It is kept only in this browser tab's memory and is never stored.</p>
+  </section>
+
+  <section class="panel hidden" id="settingsPanel">
+    <h2>Analysis settings</h2>
+    <p class="hint">Device: <strong id="devName"></strong>. These values change how the backend and dashboard interpret readings. They do not reconfigure the ESP32 – the firmware threshold is set in the Arduino sketch.</p>
+    <form class="admin" id="settingsForm">
+      <label class="f">Dry threshold (0–4095, readings at or above this count as dry)
+        <input type="number" id="threshold" min="0" max="4095" step="1" required>
+      </label>
+      <label class="f">Mark device offline after (seconds without data, 10–3600)
+        <input type="number" id="offlineAfter" min="10" max="3600" step="1" required>
+      </label>
+      <button class="btn" type="submit">Save settings</button>
+      <p class="msg" id="settingsMsg" role="status"></p>
+    </form>
+  </section>
+
+  <section class="panel locked hidden" id="pumpPanel">
+    <h2>Manual pump control</h2>
+    <p class="banner warn">Not available. No pump or relay is installed, and pump control has not been implemented. Nothing on this page can switch hardware.</p>
+    <button class="btn" type="button" disabled>Start pump</button>
+    <p class="hint" id="pumpMsg"></p>
+  </section>
+</main>
+<script src="config.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

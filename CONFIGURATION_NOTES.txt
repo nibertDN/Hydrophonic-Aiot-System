@@ -1,0 +1,36 @@
+SMART AI IRRIGATION — CONFIGURATION NOTES
+
+Already filled in:
+- Supabase project URL: https://tvcythqflvfbpxardrfh.supabase.co
+- Backend MQTT host: 192.168.8.35
+- ESP32 MQTT host: 192.168.8.35
+- Device ID: device01
+- Sensor pin mapping and soil threshold: from the previously confirmed wiring
+
+Still required from you (do not send these to anyone):
+1. Supabase server-side secret/service_role key in .env as SUPABASE_SERVICE_KEY.
+   The key you supplied starts with sb_publishable_. That is the public/publishable
+   key, NOT the server-side secret required by this Flask backend. Do not paste it
+   into SUPABASE_SERVICE_KEY. Find the service_role / secret key in Supabase
+   Project Settings -> API Keys (wording may vary). Keep it private.
+2. MQTT_PASSWORD in .env: password for your existing Mosquitto user irrigation_device.
+3. ADMIN_TOKEN in .env: generate locally with:
+   python -c "import secrets;print(secrets.token_urlsafe(32))"
+4. MQTT device password in firmware/irrigation_esp32/secrets.h, plus Wi-Fi SSID/password.
+
+Supabase SQL:
+1. Open Supabase -> SQL Editor.
+2. Run supabase/00_inspect_existing_table.sql first (read-only).
+3. Run supabase/01_schema.sql. This adds the backend's required columns/tables
+   and supplies defaults for the earlier NOT NULL columns so inserts can work.
+4. Run supabase/02_security_rls.sql. It keeps RLS enabled; the backend uses the
+   server-side secret key only.
+Do not run optional retention SQL unless you decide you want automatic deletion.
+
+Local run:
+- Extract the ZIP.
+- Edit .env and fill the three backend secrets above.
+- Double-click start_windows.bat.
+- For the ESP32, copy firmware/irrigation_esp32/secrets.h.example to
+  firmware/irrigation_esp32/secrets.h and fill Wi-Fi + MQTT device credentials.
+- Do not expose local Mosquitto port 1883 to the public internet.

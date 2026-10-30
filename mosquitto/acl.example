@@ -1,0 +1,8 @@
+# Principle of least privilege for MQTT.
+user irrigation_device
+topic write irrigation/device01/sensors
+topic write irrigation/device01/status
+
+user irrigation_backend
+topic read irrigation/+/sensors
+topic read irrigation/+/status

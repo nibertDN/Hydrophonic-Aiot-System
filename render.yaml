@@ -1,0 +1,23 @@
+# Render.com blueprint: hosted Flask backend (HTTPS is automatic).
+services:
+  - type: web
+    name: smart-irrigation-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app --workers 1 --threads 4 --bind 0.0.0.0:$PORT --timeout 60
+    healthCheckPath: /api/health
+    envVars:
+      - {key: PYTHON_VERSION, value: "3.12.4"}
+      - {key: STORE_BACKEND, value: supabase}
+      - {key: MQTT_TLS, value: "true"}
+      - {key: MQTT_PORT, value: "8883"}
+      - {key: SERVE_FRONTEND, value: "true"}
+      - {key: SUPABASE_URL, sync: false}
+      - {key: SUPABASE_SERVICE_KEY, sync: false}
+      - {key: MQTT_HOST, sync: false}
+      - {key: MQTT_USERNAME, sync: false}
+      - {key: MQTT_PASSWORD, sync: false}
+      - {key: ADMIN_TOKEN, sync: false}
+      - {key: ALLOWED_ORIGINS, sync: false}

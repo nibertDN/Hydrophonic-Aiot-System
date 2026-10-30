@@ -1,0 +1,6 @@
+# Netlify / Cloudflare Pages security headers. Replace YOUR-BACKEND with your Flask API origin.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://YOUR-BACKEND.onrender.com; frame-ancestors 'none'
